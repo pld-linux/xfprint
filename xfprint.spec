@@ -1,17 +1,15 @@
-
-%define		_snap 20040816
-
 Summary:	Print dialog and printer manager for XFce
 Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla XFce
 Name:		xfprint
-Version:	4.1.0
-Release:	0.%{_snap}.1
+Version:	4.1.90
+Release:	0.1
 License:	BSD
 Group:		X11/Applications
-Source0:	http://ep09.pld-linux.org/~havner/xfce4/%{name}-%{_snap}.tar.bz2
-# Source0-md5:	383296822d176235a034e77ff6d4b12a
+Source0:	ftp://ftp.berlios.de/pub/xfce-goodies/%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	7305c9fcf1756f0c68699a8200683c3d
 Patch0:		%{name}-locale-names.patch
 URL:		http://www.xfce.org/
+BuildRequires:	a2ps-devel
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	glib2-devel >= 2.0.6
@@ -33,7 +31,7 @@ Xfprint zawiera okno dialogowe wydruku i zarz±dcê drukarek dla
 ¶rodowiska XFce.
 
 %prep
-%setup -q -n %{name}
+%setup -q
 %patch0 -p1
 
 mv -f po/{fa_IR,fa}.po
@@ -58,7 +56,8 @@ rm -rf $RPM_BUILD_ROOT
 	DESTDIR=$RPM_BUILD_ROOT
 
 # unusable (no devel resources)
-rm -f $RPM_BUILD_ROOT%{_libdir}/lib*.{la,a}
+rm -f $RPM_BUILD_ROOT%{_libdir}/xfce4/mcs-plugins/*.{la,a}
+rm -f $RPM_BUILD_ROOT%{_libdir}/xfce4/xfprint-plugins/*.{la,a}
 
 %find_lang %{name}
 
