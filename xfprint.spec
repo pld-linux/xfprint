@@ -10,16 +10,16 @@ Source0:	ftp://ftp.berlios.de/pub/xfce-goodies/%{version}/%{name}-%{version}.tar
 Patch0:		%{name}-locale-names.patch
 URL:		http://www.xfce.org/
 BuildRequires:	a2ps-devel
-BuildRequires:	autoconf >= 2.50
+BuildRequires:	autoconf
 BuildRequires:	automake
-BuildRequires:	glib2-devel >= 2.0.6
+BuildRequires:	glib2-devel >= 2.2.0
 BuildRequires:	intltool
 BuildRequires:	libtool
-BuildRequires:	libxfcegui4-devel >= 4.1.25
+BuildRequires:	libxfcegui4-devel >= 4.1.91
 BuildRequires:	pkgconfig >= 0.9.0
 Requires:	a2ps
-Requires:	glib2 >= 2.0.6
-Requires:	libxfcegui4 >= 4.1.25
+Requires:	glib2 >= 2.2.0
+Requires:	libxfcegui4 >= 4.1.91
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
