@@ -1,13 +1,15 @@
+
+%define		_snap 20040806
+
 Summary:	Print dialog and printer manager for XFce
 Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla XFce
 Name:		xfprint
-Version:	4.0.6
-Release:	1
+Version:	4.2.0
+Release:	0.%{_snap}.1
 License:	BSD
 Group:		X11/Applications
-#Source0:	ftp://ftp.berlios.de/pub/xfce-goodies/%{version}/%{name}-%{version}.tar.gz
-Source0:	http://hannelore.f1.fhtw-berlin.de/mirrors/xfce4/xfce-%{version}/src/%{name}-%{version}.tar.gz
-# Source0-md5:	3ab525472bab3eb87146d808d3c17df1
+Source0:	http://ep09.pld-linux.org/~havner/xfce4/%{name}-%{_snap}.tar.bz2
+# Source0-md5:	c0b722f2033f7ae4f4ec757852f02f18
 Patch0:		%{name}-locale-names.patch
 URL:		http://www.xfce.org/
 BuildRequires:	autoconf >= 2.50
@@ -31,11 +33,10 @@ Xfprint zawiera okno dialogowe wydruku i zarz±dcê drukarek dla
 ¶rodowiska XFce.
 
 %prep
-%setup -q
+%setup -q -n %{name}
 %patch0 -p1
 
 mv -f po/{fa_IR,fa}.po
-mv -f po/{no,nb}.po
 mv -f po/{pt_PT,pt}.po
 
 %build
