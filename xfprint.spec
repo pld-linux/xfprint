@@ -1,12 +1,12 @@
 Summary:	Print dialog and printer manager for Xfce
 Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla Xfce
 Name:		xfprint
-Version:	4.2.0
+Version:	4.2.1
 Release:	1
 License:	BSD
 Group:		X11/Applications
-Source0:	http://www.us.xfce.org/archive/xfce-%{version}/src/%{name}-%{version}.tar.gz
-# Source0-md5:	dce7378c3961122ca20b2518e939e57c
+Source0:        http://hannelore.f1.fhtw-berlin.de/mirrors/xfce4/xfce-%{version}/src/%{name}-%{version}.tar.gz
+# Source0-md5:	da40a8881566880b166a9b91a70ef8c9
 Patch0:		%{name}-locale-names.patch
 Patch1:		%{name}-lpr.patch
 URL:		http://www.xfce.org/
@@ -25,6 +25,7 @@ BuildRequires:	xfce-mcs-manager-devel >= 4.1.91
 Requires:	a2ps
 Requires:	glib2 >= 2.2.0
 Requires:	libxfcegui4 >= 4.1.91
+Requires:	%{name}-print-backend >= %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -39,6 +40,7 @@ Xfprint zawiera okno dialogowe wydruku i zarz±dcê drukarek dla
 Summary:	cups plugin for xfprint
 Summary(pl):	Wtyczka cups dla xfprint
 Group:		X11/Applications
+Provides:	%{name}-print-backend
 Requires:	%{name} = %{version}-%{release}
 
 %description cups
@@ -53,6 +55,7 @@ korzystanie z systemu wydruku cups.
 Summary:	bsdlpr plugin for xfprint
 Summary(pl):	Wtyczka bsdlpr dla xfprint
 Group:		X11/Applications
+Provides:	%{name}-print-backend
 Requires:	%{name} = %{version}-%{release}
 Requires:	/usr/bin/lpr
 
@@ -108,8 +111,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc AUTHORS COPYING ChangeLog README
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/xfce4/mcs-plugins/*.so
-%dir %{_libdir}/xfce4/xfprint-plugins
-%attr(755,root,root) %{_libdir}/xfce4/xfprint-plugins/file_plugin.so
 %{_iconsdir}/hicolor/*/*/*
 %{_desktopdir}/*
 %{_datadir}/xfce4/doc/C/xfprint.html
