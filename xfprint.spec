@@ -22,10 +22,10 @@ BuildRequires:	libxfce4mcs-devel >= 4.1.91
 BuildRequires:	libxfcegui4-devel >= 4.1.91
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	xfce-mcs-manager-devel >= 4.1.91
+Requires:	%{name}-print-backend = %{version}-%{release}
 Requires:	a2ps
 Requires:	glib2 >= 2.2.0
 Requires:	libxfcegui4 >= 4.1.91
-Requires:	%{name}-print-backend >= %{version}-%{release}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -40,8 +40,8 @@ Xfprint zawiera okno dialogowe wydruku i zarz±dcê drukarek dla
 Summary:	cups plugin for xfprint
 Summary(pl):	Wtyczka cups dla xfprint
 Group:		X11/Applications
-Provides:	%{name}-print-backend
 Requires:	%{name} = %{version}-%{release}
+Provides:	%{name}-print-backend = %{version}-%{release}
 
 %description cups
 This package contains plugin for xfprint allowing to use cups printing
@@ -55,9 +55,9 @@ korzystanie z systemu wydruku cups.
 Summary:	bsdlpr plugin for xfprint
 Summary(pl):	Wtyczka bsdlpr dla xfprint
 Group:		X11/Applications
-Provides:	%{name}-print-backend
 Requires:	%{name} = %{version}-%{release}
 Requires:	/usr/bin/lpr
+Provides:	%{name}-print-backend = %{version}-%{release}
 
 %description bsdlpr
 This package contains plugin for xfprint allowing to use old bsd
