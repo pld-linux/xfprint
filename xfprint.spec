@@ -2,19 +2,23 @@ Summary:	Print dialog and printer manager for XFce
 Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla XFce
 Name:		xfprint
 Version:	4.0.5
-Release:	1
+Release:	2
 License:	BSD
 Group:		X11/Applications
 #Source0:	ftp://ftp.berlios.de/pub/xfce-goodies/%{version}/%{name}-%{version}.tar.gz
 Source0:	http://hannelore.f1.fhtw-berlin.de/mirrors/xfce4/xfce-%{version}/src/%{name}-%{version}.tar.gz
 # Source0-md5:	62e53823c1cfd4094f3df914abd5e691
+Patch0:		%{name}-locale-names.patch
 URL:		http://www.xfce.org/
-BuildRequires:	glib2-devel >= 2.0.0
+BuildRequires:	autoconf >= 2.50
+BuildRequires:	automake
+BuildRequires:	glib2-devel >= 2.0.6
 BuildRequires:	intltool
+BuildRequires:	libtool
 BuildRequires:	libxfcegui4-devel >= %{version}
 BuildRequires:	pkgconfig >= 0.9.0
 Requires:	a2ps
-Requires:	glib2 >= 2.0.0
+Requires:	glib2 >= 2.0.6
 Requires:	libxfcegui4 >= %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -28,10 +32,20 @@ Xfprint zawiera okno dialogowe wydruku i zarz±dcê drukarek dla
 
 %prep
 %setup -q
+%patch0 -p1
+
+mv -f po/{fa_IR,fa}.po
+mv -f po/{no,nb}.po
+mv -f po/{pt_PT,pt}.po
 
 %build
 glib-gettextize --copy --force
 intltoolize --copy --force
+%{__libtoolize}
+%{__aclocal} -I m4
+%{__autoconf}
+%{__autoheader}
+%{__automake}
 %configure
 
 %{__make}
