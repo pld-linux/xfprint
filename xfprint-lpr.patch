@@ -1,0 +1,12 @@
+diff -urN xfprint-4.1.99.1.orig/configure.ac xfprint-4.1.99.1/configure.ac
+--- xfprint-4.1.99.1.orig/configure.ac	2004-11-06 15:43:03.000000000 +0100
++++ xfprint-4.1.99.1/configure.ac	2004-11-28 02:49:06.415269360 +0100
+@@ -106,7 +106,7 @@
+ AC_HELP_STRING([--enable-bsdlpr], [Enable BSD-LPR support in xfprint]),
+ [], [enable_bsdlpr=yes])
+ if test x"$enable_bsdlpr" = x"yes"; then
+-  AC_CHECK_PROG([bsdlpr_found], [lpr], [yes], [no])
++  bsdlpr_found="yes"
+ else
+   bsdlpr_found="no"
+ fi
