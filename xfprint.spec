@@ -44,7 +44,7 @@ Requires:	%{name} = %{version}-%{release}
 This package contains plugin for xfprint4 allowing to use cups printing
 system directly.
 
-%description devel -l pl
+%description cups -l pl
 Paczka ta zawiera wtyczke dla xfprint4, ktora umozliwia bezposrednie
 korzystanie z systemu wydruku cups.
 
