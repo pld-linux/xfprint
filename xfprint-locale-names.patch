@@ -1,14 +1,13 @@
-diff -ur xfprint.orig/configure.ac xfprint/configure.ac
---- xfprint.orig/configure.ac	2004-08-16 20:46:56.000000000 +0200
-+++ xfprint/configure.ac	2004-08-16 23:24:40.122572456 +0200
-@@ -31,8 +31,8 @@
+--- xfprint-4.1.90/configure.ac.orig	2004-09-26 12:43:35.000000000 +0200
++++ xfprint-4.1.90/configure.ac	2004-10-09 08:51:05.180700040 +0200
+@@ -32,8 +32,8 @@
  AC_FUNC_MMAP
  
  dnl Check for i18n support
--BM_I18N([xfprint], [ar az bg ca cs de es es_MX eu fa_IR fr he hi hu it ja ko lt ms nl ru
--	 sv ta tr pl pt_BR pt_PT uk vi zh_CN zh_TW])
-+BM_I18N([xfprint], [ar az bg ca cs de es es_MX eu fa fr he hi hu it ja ko lt ms nl ru
-+	 sv ta tr pl pt_BR pt uk vi zh_CN zh_TW])
+-BM_I18N([xfprint], [ar az be bg ca cs de es es_MX et eu fa_IR fr gu he hi hu
+-		    it ja ko lt ms nl ru sk sv ta tr pl pt_BR pt_PT uk vi
++BM_I18N([xfprint], [ar az be bg ca cs de es es_MX et eu fa fr gu he hi hu
++		    it ja ko lt ms nl ru sk sv ta tr pl pt_BR pt uk vi
+ 		    zh_CN zh_TW])
  
  dnl Check for gmodule >= 2.2.0
- BM_DEPEND([GMODULE], [gmodule-2.0], [2.2.0])
