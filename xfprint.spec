@@ -35,32 +35,32 @@ Xfprint zawiera okno dialogowe wydruku i zarz±dcê drukarek dla
 ¶rodowiska XFce.
 
 %package cups
-Summary:	cups plugin for xfprint4
-Summary(pl):	Wtyczka cups dla xfprint4
+Summary:	cups plugin for xfprint
+Summary(pl):	Wtyczka cups dla xfprint
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
 
 %description cups
-This package contains plugin for xfprint4 allowing to use cups printing
+This package contains plugin for xfprint allowing to use cups printing
 system directly.
 
 %description cups -l pl
-Paczka ta zawiera wtyczke dla xfprint4, ktora umozliwia bezposrednie
+Paczka ta zawiera wtyczke dla xfprint, ktora umozliwia bezposrednie
 korzystanie z systemu wydruku cups.
 
 %package bsdlpr
-Summary:	bsdlpr plugin for xfprint4
-Summary(pl):	Wtyczka bsdlpr dla xfprint4
+Summary:	bsdlpr plugin for xfprint
+Summary(pl):	Wtyczka bsdlpr dla xfprint
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
 Requires:	/usr/bin/lpr
 
 %description bsdlpr
-This package contains plugin for xfprint4 allowing to use old bsd
+This package contains plugin for xfprint allowing to use old bsd
 style printing system through lpr program.
 
 %description bsdlpr -l pl
-Paczka ta zawiera wtyczke dla xfprint4, ktora umozliwia drukowanie
+Paczka ta zawiera wtyczke dla xfprint, ktora umozliwia drukowanie
 w stylu bsd poprzez program lpr.
 
 %prep
