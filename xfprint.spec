@@ -1,29 +1,29 @@
-Summary:	Print dialog and printer manager for XFce 4
-Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla XFce 4
+Summary:	Print dialog and printer manager for XFce
+Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla XFce
 Name:		xfprint
-Version:	3.99.4
+Version:	4.0.0
 Release:	1
 License:	BSD
 Group:		X11/Applications
-Source0:	http://www.xfce.org/archive/xfce4-rc4/src/%{name}-%{version}.tar.gz
-# Source0-md5:	d492d758e2ee53bb8430a961a51b632f
+Source0:	http://www.xfce.org/archive/xfce-%{version}/src/%{name}-%{version}.tar.gz
+# Source0-md5:	b2ba1fa91737294785ce7a8b8a282d78
 URL:		http://www.xfce.org/
 BuildRequires:	glib2-devel >= 2.0.0
 BuildRequires:	intltool
-BuildRequires:	libxfcegui4-devel >= 3.99.4
+BuildRequires:	libxfcegui4-devel >= %{version}
 BuildRequires:	pkgconfig >= 0.9.0
 Requires:	a2ps
 Requires:	glib2 >= 2.0.0
-Requires:	libxfcegui4 >= 3.99.4
+Requires:	libxfcegui4 >= %{version}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Xfprint contains a print dialog and a printer manager for the XFce 4
+Xfprint contains a print dialog and a printer manager for the XFce
 Desktop Environment.
 
 %description -l pl
 Xfprint zawiera okno dialogowe wydruku i zarz±dcê drukarek dla
-¶rodowiska XFce 4.
+¶rodowiska XFce.
 
 %prep
 %setup -q
