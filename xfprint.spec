@@ -15,6 +15,7 @@ BuildRequires:	automake
 BuildRequires:	glib2-devel >= 2.2.0
 BuildRequires:	intltool
 BuildRequires:	libtool
+BuildRequires:	libxfce4mcs-devel >= 4.1.91
 BuildRequires:	libxfcegui4-devel >= 4.1.91
 BuildRequires:	pkgconfig >= 0.9.0
 Requires:	a2ps
