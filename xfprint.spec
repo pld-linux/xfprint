@@ -1,5 +1,5 @@
 
-%define		_snap 20040813
+%define		_snap 20040816
 
 Summary:	Print dialog and printer manager for XFce
 Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla XFce
@@ -9,7 +9,7 @@ Release:	0.%{_snap}.1
 License:	BSD
 Group:		X11/Applications
 Source0:	http://ep09.pld-linux.org/~havner/xfce4/%{name}-%{_snap}.tar.bz2
-# Source0-md5:	731fb37749e0570508a2b5f7029be8b5
+# Source0-md5:	383296822d176235a034e77ff6d4b12a
 Patch0:		%{name}-locale-names.patch
 URL:		http://www.xfce.org/
 BuildRequires:	autoconf >= 2.50
