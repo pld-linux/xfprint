@@ -1,0 +1,13 @@
+--- xfprint-4.0.5/configure.ac.orig	Sun Mar 14 22:55:24 2004
++++ xfprint-4.0.5/configure.ac	Thu Jul  8 16:41:58 2004
+@@ -31,8 +31,8 @@
+ AC_FUNC_MMAP
+ 
+ dnl Check for i18n support
+-BM_I18N([xfprint], [ar az bg ca cs de es es_MX fa_IR fr hi hu it ja lt ms nl ru
+-	 sv ta tr no pl pt_BR pt_PT uk vi zh_CN zh_TW])
++BM_I18N([xfprint], [ar az bg ca cs de es es_MX fa fr hi hu it ja lt ms nl ru
++	 sv ta tr nb pl pt_BR pt uk vi zh_CN zh_TW])
+ 
+ dnl Check for GThread >= 2.0 installed
+ BM_DEPEND([GTHREAD], [gthread-2.0], [2.0.6])
