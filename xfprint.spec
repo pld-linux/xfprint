@@ -18,6 +18,7 @@ BuildRequires:	libtool
 BuildRequires:	libxfce4mcs-devel >= 4.1.91
 BuildRequires:	libxfcegui4-devel >= 4.1.91
 BuildRequires:	pkgconfig >= 0.9.0
+BuildRequires:	xfce-mcs-manager-devel >= 4.1.91
 Requires:	a2ps
 Requires:	glib2 >= 2.2.0
 Requires:	libxfcegui4 >= 4.1.91
