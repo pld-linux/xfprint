@@ -11,6 +11,7 @@ URL: 		http://www.xfce.org/
 BuildRequires: 	glib2-devel >= 2.0.0
 BuildRequires:	intltool
 BuildRequires: 	libxfcegui4-devel >= 0.0.16
+BuildRequires:	pkgconfig >= 0.9.0
 Requires:	a2ps
 Requires:	glib2 >= 2.0.0
 Requires:	libxfcegui4 >= 0.0.16
