@@ -14,6 +14,7 @@ BuildRequires:	a2ps-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	cups-devel
+BuildRequires:	gettext-devel
 BuildRequires:	glib2-devel >= 2.2.0
 BuildRequires:	intltool
 BuildRequires:	libtool
