@@ -1,13 +1,11 @@
---- xfprint-4.0.6/configure.ac.orig	2004-07-09 10:10:03.000000000 +0200
-+++ xfprint-4.0.6/configure.ac	2004-07-12 18:51:20.055246648 +0200
-@@ -31,8 +31,8 @@
- AC_FUNC_MMAP
+--- xfprint-4.1.91/configure.ac.orig	2004-10-29 22:40:40.000000000 +0200
++++ xfprint-4.1.91/configure.ac	2004-11-13 21:36:48.555924624 +0100
+@@ -33,7 +33,7 @@
  
  dnl Check for i18n support
--BM_I18N([xfprint], [ar az bg ca cs de es es_MX et eu fa_IR fr hi hu it ja lt ms nl ru
--	 sv ta tr no pl pt_BR pt_PT uk vi zh_CN zh_TW])
-+BM_I18N([xfprint], [ar az bg ca cs de es es_MX et eu fa fr hi hu it ja lt ms nl ru
-+	 sv ta tr nb pl pt_BR pt uk vi zh_CN zh_TW])
+ BM_I18N([xfprint], [ar az be bg ca cs de es es_MX et eu fa fi fr gu he hi hu
+-		    it ja ko lt ms nl ru sk sv ta tr pa pl pt_BR pt_PT uk vi
++		    it ja ko lt ms nl ru sk sv ta tr pa pl pt_BR pt uk vi
+ 		    zh_CN zh_TW])
  
- dnl Check for GThread >= 2.0 installed
- BM_DEPEND([GTHREAD], [gthread-2.0], [2.0.6])
+ dnl Check for gmodule >= 2.2.0
