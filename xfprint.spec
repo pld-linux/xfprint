@@ -2,7 +2,7 @@ Summary:	Print dialog and printer manager for XFce
 Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla XFce
 Name:		xfprint
 Version:	4.1.99.1
-Release:	2
+Release:	3
 License:	BSD
 Group:		X11/Applications
 Source0:	ftp://ftp.berlios.de/pub/xfce-goodies/%{version}/%{name}-%{version}.tar.gz
@@ -24,7 +24,6 @@ BuildRequires:	xfce-mcs-manager-devel >= 4.1.91
 Requires:	a2ps
 Requires:	glib2 >= 2.2.0
 Requires:	libxfcegui4 >= 4.1.91
-Requires:	/usr/bin/lpr
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -34,6 +33,35 @@ Desktop Environment.
 %description -l pl
 Xfprint zawiera okno dialogowe wydruku i zarz±dcê drukarek dla
 ¶rodowiska XFce.
+
+%package cups
+Summary:	cups plugin for xfprint4
+Summary(pl):	Wtyczka cups dla xfprint4
+Group:		X11/Applications
+Requires:	%{name} = %{version}-%{release}
+
+%description cups
+This package contains plugin for xfprint4 allowing to use cups printing
+system directly.
+
+%description devel -l pl
+Paczka ta zawiera wtyczke dla xfprint4, ktora umozliwia bezposrednie
+korzystanie z systemu wydruku cups.
+
+%package bsdlpr
+Summary:	bsdlpr plugin for xfprint4
+Summary(pl):	Wtyczka bsdlpr dla xfprint4
+Group:		X11/Applications
+Requires:	%{name} = %{version}-%{release}
+Requires:	/usr/bin/lpr
+
+%description bsdlpr
+This package contains plugin for xfprint4 allowing to use old bsd
+style printing system through lpr program.
+
+%description bsdlpr -l pl
+Paczka ta zawiera wtyczke dla xfprint4, ktora umozliwia drukowanie
+w stylu bsd poprzez program lpr.
 
 %prep
 %setup -q
@@ -80,5 +108,13 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/xfce4/mcs-plugins/*.so
 %dir %{_libdir}/xfce4/xfprint-plugins
-%attr(755,root,root) %{_libdir}/xfce4/xfprint-plugins/*.so
+%attr(755,root,root) %{_libdir}/xfce4/xfprint-plugins/file_plugin.so
 %{_iconsdir}/hicolor/*/*/*
+
+%files cups
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/xfce4/xfprint-plugins/cups_plugin.so
+
+%files bsdlpr
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/xfce4/xfprint-plugins/bsdlpr_plugin.so
