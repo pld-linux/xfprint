@@ -2,16 +2,18 @@ Summary:	Print dialog and printer manager for XFce
 Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla XFce
 Name:		xfprint
 Version:	4.1.99.1
-Release:	1
+Release:	2
 License:	BSD
 Group:		X11/Applications
 Source0:	ftp://ftp.berlios.de/pub/xfce-goodies/%{version}/%{name}-%{version}.tar.gz
 # Source0-md5:	af55239d91d52470a6240e682eaea639
 Patch0:		%{name}-locale-names.patch
+Patch1:		%{name}-lpr.patch
 URL:		http://www.xfce.org/
 BuildRequires:	a2ps-devel
 BuildRequires:	autoconf
 BuildRequires:	automake
+BuildRequires:	cups-devel
 BuildRequires:	glib2-devel >= 2.2.0
 BuildRequires:	intltool
 BuildRequires:	libtool
@@ -22,6 +24,7 @@ BuildRequires:	xfce-mcs-manager-devel >= 4.1.91
 Requires:	a2ps
 Requires:	glib2 >= 2.2.0
 Requires:	libxfcegui4 >= 4.1.91
+Requires:	/usr/bin/lpr
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -35,6 +38,7 @@ Xfprint zawiera okno dialogowe wydruku i zarz±dcê drukarek dla
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 mv -f po/{pt_PT,pt}.po
 
@@ -46,7 +50,9 @@ intltoolize --copy --force
 %{__autoconf}
 %{__autoheader}
 %{__automake}
-%configure
+%configure \
+	--enable-cups \
+	--enable-bsdlpr
 
 %{__make}
 
