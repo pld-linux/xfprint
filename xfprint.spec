@@ -1,12 +1,12 @@
-Summary:	Print dialog and printer manager for XFce
-Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla XFce
+Summary:	Print dialog and printer manager for Xfce
+Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla Xfce
 Name:		xfprint
-Version:	4.1.99.2
+Version:	4.1.99.3
 Release:	1
 License:	BSD
 Group:		X11/Applications
 Source0:	ftp://ftp.berlios.de/pub/xfce-goodies/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	d2e92227dea1c70c021f10081652cbf6
+# Source0-md5:	4e9102fbc3942630b0e2030b0d973a76
 Patch0:		%{name}-locale-names.patch
 Patch1:		%{name}-lpr.patch
 URL:		http://www.xfce.org/
@@ -28,12 +28,12 @@ Requires:	libxfcegui4 >= 4.1.91
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Xfprint contains a print dialog and a printer manager for the XFce
+Xfprint contains a print dialog and a printer manager for the Xfce
 Desktop Environment.
 
 %description -l pl
 Xfprint zawiera okno dialogowe wydruku i zarz±dcê drukarek dla
-¶rodowiska XFce.
+¶rodowiska Xfce.
 
 %package cups
 Summary:	cups plugin for xfprint
@@ -112,7 +112,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_libdir}/xfce4/xfprint-plugins/file_plugin.so
 %{_iconsdir}/hicolor/*/*/*
 %{_datadir}/xfce4/doc/C/xfprint.html
-%{_datadir}/xfce4/doc/C/images/mcs-plugin.png
+%{_datadir}/xfce4/doc/C/images/*.png
 
 %files cups
 %defattr(644,root,root,755)
