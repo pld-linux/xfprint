@@ -1,12 +1,12 @@
 Summary:	Print dialog and printer manager for Xfce
 Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla Xfce
 Name:		xfprint
-Version:	4.2.1
+Version:	4.2.2
 Release:	1
 License:	BSD
 Group:		X11/Applications
 Source0:        http://hannelore.f1.fhtw-berlin.de/mirrors/xfce4/xfce-%{version}/src/%{name}-%{version}.tar.gz
-# Source0-md5:	da40a8881566880b166a9b91a70ef8c9
+# Source0-md5:	033cc5a89b781bd13491d39ac7b351ba
 Patch0:		%{name}-locale-names.patch
 Patch1:		%{name}-lpr.patch
 URL:		http://www.xfce.org/
@@ -22,6 +22,7 @@ BuildRequires:	libxfce4mcs-devel >= 4.1.91
 BuildRequires:	libxfcegui4-devel >= 4.1.91
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	xfce-mcs-manager-devel >= 4.1.91
+BuildRequires:	xfce4-dev-tools
 Requires:	%{name}-print-backend = %{version}-%{release}
 Requires:	a2ps
 Requires:	glib2 >= 2.2.0
@@ -78,7 +79,7 @@ mv -f po/{pt_PT,pt}.po
 glib-gettextize --copy --force
 intltoolize --copy --force
 %{__libtoolize}
-%{__aclocal} -I m4
+%{__aclocal} -I %{_datadir}/xfce4/dev-tools/m4macros
 %{__autoconf}
 %{__autoheader}
 %{__automake}
@@ -115,6 +116,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/*
 %{_datadir}/xfce4/doc/C/xfprint.html
 %{_datadir}/xfce4/doc/C/images/*.png
+%lang(fr) %{_datadir}/xfce4/doc/fr/*.html
+%lang(fr) %{_datadir}/xfce4/doc/fr/images/*.png
 
 %files cups
 %defattr(644,root,root,755)
