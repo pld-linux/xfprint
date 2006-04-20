@@ -5,7 +5,7 @@ Version:	4.2.3
 Release:	1
 License:	BSD
 Group:		X11/Applications
-Source0:        http://hannelore.f1.fhtw-berlin.de/mirrors/xfce4/xfce-%{version}/src/%{name}-%{version}.tar.gz
+Source0:	http://hannelore.f1.fhtw-berlin.de/mirrors/xfce4/xfce-%{version}/src/%{name}-%{version}.tar.gz
 # Source0-md5:	64c983a6d7778cbd5d6c93ee1dbbd3f9
 Patch0:		%{name}-locale-names.patch
 Patch1:		%{name}-lpr.patch
