@@ -1,11 +1,11 @@
---- xfprint-4.2.1/configure.ac	2005-03-12 15:19:38.000000000 +0100
-+++ fix/xfprint-4.2.1/configure.ac	2005-03-16 06:29:30.837635424 +0100
+--- xfprint-4.2.3/configure.ac.orig	2005-11-05 18:14:50.000000000 +0100
++++ xfprint-4.2.3/configure.ac	2005-11-13 01:41:39.000000000 +0100
 @@ -48,7 +48,7 @@
  dnl Check for i18n support
- BM_I18N([xfprint], [ar az be bg ca cs de en_GB es es_MX et eu fa fi fr gu
- 		    he hi hu it ja ko lt ms nl ru sk sv ta tr pa pl pt_BR
--		    pt_PT sk uk vi zh_CN zh_TW])
-+		    pt sk uk vi zh_CN zh_TW])
+ BM_I18N([xfprint], [af ar az be bg bn_IN ca cs de el en_GB es es_MX et
+ 		    eu fa fi fr gu he hi hu it ja ko ku lt mr ms nl ro
+-		    ru sk sl sv ta tr pa pl pt_BR pt_PT sk uk vi zh_CN
++		    ru sk sl sv ta tr pa pl pt_BR pt sk uk vi zh_CN
+ 		    zh_TW])
  
  dnl Check for gmodule >= 2.2.0
- BM_DEPEND([GMODULE], [gmodule-2.0], [2.2.0])
