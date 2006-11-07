@@ -115,7 +115,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_libdir}/xfce4/mcs-plugins/*.so
 %{_iconsdir}/hicolor/*/*/*
-%{_desktopdir}/*
+%{_desktopdir}/*.desktop
 %{_datadir}/xfce4/doc/C/*
 %lang(fr) %{_datadir}/xfce4/doc/fr/*
 %lang(he) %{_datadir}/xfce4/doc/he/*
