@@ -1,33 +1,31 @@
 Summary:	Print dialog and printer manager for Xfce
 Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla Xfce
 Name:		xfprint
-Version:	4.2.3
+Version:	4.3.99.2
 Release:	1
-License:	BSD
+License:	GPL
 Group:		X11/Applications
-Source0:	http://hannelore.f1.fhtw-berlin.de/mirrors/xfce4/xfce-%{version}/src/%{name}-%{version}.tar.gz
-# Source0-md5:	64c983a6d7778cbd5d6c93ee1dbbd3f9
+Source0:	http://www.xfce.org/archive/xfce-%{version}/src/%{name}-%{version}.tar.bz2
+# Source0-md5:	c2eb9dee0002e875b91e73557f7354a1
 Patch0:		%{name}-locale-names.patch
 Patch1:		%{name}-lpr.patch
 URL:		http://www.xfce.org/
 BuildRequires:	a2ps-devel
-BuildRequires:	autoconf
+BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	cups-devel
 BuildRequires:	gettext-devel
-BuildRequires:	glib2-devel >= 2.2.0
+BuildRequires:	gtk+2-devel >= 2:2.10.6
 BuildRequires:	intltool
 BuildRequires:	libtool
-BuildRequires:	libxfce4mcs-devel >= 4.2.0
-BuildRequires:	libxfcegui4-devel >= 4.2.0
+BuildRequires:	libxfce4mcs-devel >= %{version}
+BuildRequires:	libxfcegui4-devel >= %{version}
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	pkgconfig >= 1:0.9.0
-BuildRequires:	xfce-mcs-manager-devel >= 4.2.0
-BuildRequires:	xfce4-dev-tools
+BuildRequires:	xfce-mcs-manager-devel >= %{version}
+BuildRequires:	xfce4-dev-tools >= %{version}
 Requires:	%{name}-print-backend = %{version}-%{release}
 Requires:	a2ps
-Requires:	glib2 >= 2.2.0
-Requires:	libxfcegui4 >= 4.2.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -62,12 +60,24 @@ Requires:	/usr/bin/lpr
 Provides:	%{name}-print-backend = %{version}-%{release}
 
 %description bsdlpr
-This package contains plugin for xfprint allowing to use old bsd
-style printing system through lpr program.
+This package contains plugin for xfprint allowing to use old bsd style
+printing system through lpr program.
 
 %description bsdlpr -l pl
-Paczka ta zawiera wtyczkê dla xfprint, która umo¿liwia drukowanie
-w stylu bsd poprzez program lpr.
+Paczka ta zawiera wtyczkê dla xfprint, która umo¿liwia drukowanie w
+stylu bsd poprzez program lpr.
+
+%package devel
+Summary:	Headers files for the xfprint library
+Summary(pl):	Pliki nag³ówkowe biblioteki xfprint
+Group:		X11/Development/Libraries
+Requires:	%{name} = %{version}-%{release}
+
+%description devel
+Header files for the xfprint library.
+
+%description devel -l pl
+Pliki nag³ówkowe biblioteki xfprint.
 
 %prep
 %setup -q
@@ -77,10 +87,10 @@ w stylu bsd poprzez program lpr.
 mv -f po/{pt_PT,pt}.po
 
 %build
-glib-gettextize --copy --force
-intltoolize --copy --force
+%{__glib_gettextize}
+%{__intltoolize}
 %{__libtoolize}
-%{__aclocal} -I %{_datadir}/xfce4/dev-tools/m4macros
+%{__aclocal}
 %{__autoconf}
 %{__autoheader}
 %{__automake}
@@ -111,14 +121,14 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc AUTHORS COPYING ChangeLog README
+%doc AUTHORS ChangeLog README
 %attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_libdir}/libxfprint.so.*.*.*
 %attr(755,root,root) %{_libdir}/xfce4/mcs-plugins/*.so
-%{_iconsdir}/hicolor/*/*/*
+%dir %{_libdir}/xfce4/xfprint-plugins
 %{_desktopdir}/*.desktop
 %{_datadir}/xfce4/doc/C/*
 %lang(fr) %{_datadir}/xfce4/doc/fr/*
-%lang(he) %{_datadir}/xfce4/doc/he/*
 
 %files cups
 %defattr(644,root,root,755)
@@ -127,3 +137,10 @@ rm -rf $RPM_BUILD_ROOT
 %files bsdlpr
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/xfce4/xfprint-plugins/bsdlpr_plugin.so
+
+%files devel
+%defattr(644,root,root,755)
+%attr(755,root,root) %{_libdir}/libxfprint.so
+%{_includedir}/xfce4/libxfprint
+%{_libdir}/libxfprint.la
+%{_pkgconfigdir}/xfprint-1.0.pc
