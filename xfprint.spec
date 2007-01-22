@@ -1,12 +1,12 @@
 Summary:	Print dialog and printer manager for Xfce
 Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla Xfce
 Name:		xfprint
-Version:	4.3.99.2
+Version:	4.4.0
 Release:	1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://www.xfce.org/archive/xfce-%{version}/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	c2eb9dee0002e875b91e73557f7354a1
+# Source0-md5:	4b6d8f5381e73e912abddf2fdbf9888f
 Patch0:		%{name}-locale-names.patch
 Patch1:		%{name}-lpr.patch
 URL:		http://www.xfce.org/
@@ -16,14 +16,18 @@ BuildRequires:	automake
 BuildRequires:	cups-devel
 BuildRequires:	gettext-devel
 BuildRequires:	gtk+2-devel >= 2:2.10.6
+BuildRequires:	gtk-doc >= 1.7
 BuildRequires:	intltool
 BuildRequires:	libtool
 BuildRequires:	libxfce4mcs-devel >= %{version}
 BuildRequires:	libxfcegui4-devel >= %{version}
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	pkgconfig >= 1:0.9.0
+BuildRequires:	rpmbuild(macros) >= 1.311
 BuildRequires:	xfce-mcs-manager-devel >= %{version}
 BuildRequires:	xfce4-dev-tools >= %{version}
+Requires(post,postun):	gtk+2
+Requires(post,postun):	hicolor-icon-theme
 Requires:	%{name}-print-backend = %{version}-%{release}
 Requires:	a2ps
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -35,6 +39,18 @@ Desktop Environment.
 %description -l pl
 Xfprint zawiera okno dialogowe wydruku i zarz±dcê drukarek dla
 ¶rodowiska Xfce.
+
+%package apidocs
+Summary:	xfprint API documentation
+Summary(pl):	Dokumentacja API xfprint
+Group:		Documentation
+Requires:	gtk-doc-common
+
+%description apidocs
+xfprint API documentation.
+
+%description apidocs -l pl
+Dokumentacja API xfprint.
 
 %package cups
 Summary:	CUPS plugin for xfprint
@@ -97,7 +113,9 @@ mv -f po/{pt_PT,pt}.po
 %configure \
 	--disable-static \
 	--enable-cups \
-	--enable-bsdlpr
+	--enable-bsdlpr \
+	--enable-gtk-doc \
+	--with-html-dir=%{_gtkdocdir}
 
 %{__make}
 
@@ -116,8 +134,13 @@ rm -f $RPM_BUILD_ROOT%{_libdir}/xfce4/xfprint-plugins/*.la
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post	-p /sbin/ldconfig
-%postun	-p /sbin/ldconfig
+%post
+/sbin/ldconfig
+%update_icon_cache hicolor
+
+%postun
+/sbin/ldconfig
+%update_icon_cache hicolor
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
@@ -129,6 +152,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_desktopdir}/*.desktop
 %{_datadir}/xfce4/doc/C/*
 %lang(fr) %{_datadir}/xfce4/doc/fr/*
+%{_iconsdir}/hicolor/*/devices/*
+
+%files apidocs
+%defattr(644,root,root,755)
+%{_gtkdocdir}/libxfprint
 
 %files cups
 %defattr(644,root,root,755)
