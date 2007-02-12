@@ -1,5 +1,5 @@
 Summary:	Print dialog and printer manager for Xfce
-Summary(pl):	Okno dialogowe wydruku i zarz±dca drukarek dla Xfce
+Summary(pl.UTF-8):   Okno dialogowe wydruku i zarzÄ…dca drukarek dla Xfce
 Name:		xfprint
 Version:	4.4.0
 Release:	1
@@ -36,25 +36,25 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Xfprint contains a print dialog and a printer manager for the Xfce
 Desktop Environment.
 
-%description -l pl
-Xfprint zawiera okno dialogowe wydruku i zarz±dcê drukarek dla
-¶rodowiska Xfce.
+%description -l pl.UTF-8
+Xfprint zawiera okno dialogowe wydruku i zarzÄ…dcÄ™ drukarek dla
+Å›rodowiska Xfce.
 
 %package apidocs
 Summary:	xfprint API documentation
-Summary(pl):	Dokumentacja API xfprint
+Summary(pl.UTF-8):   Dokumentacja API xfprint
 Group:		Documentation
 Requires:	gtk-doc-common
 
 %description apidocs
 xfprint API documentation.
 
-%description apidocs -l pl
+%description apidocs -l pl.UTF-8
 Dokumentacja API xfprint.
 
 %package cups
 Summary:	CUPS plugin for xfprint
-Summary(pl):	Wtyczka CUPS dla xfprint
+Summary(pl.UTF-8):   Wtyczka CUPS dla xfprint
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
 Provides:	%{name}-print-backend = %{version}-%{release}
@@ -63,13 +63,13 @@ Provides:	%{name}-print-backend = %{version}-%{release}
 This package contains plugin for xfprint allowing to use CUPS printing
 system directly.
 
-%description cups -l pl
-Paczka ta zawiera wtyczkê dla xfprint, która umo¿liwia bezpo¶rednie
+%description cups -l pl.UTF-8
+Paczka ta zawiera wtyczkÄ™ dla xfprint, ktÃ³ra umoÅ¼liwia bezpoÅ›rednie
 korzystanie z systemu wydruku CUPS.
 
 %package bsdlpr
 Summary:	bsdlpr plugin for xfprint
-Summary(pl):	Wtyczka bsdlpr dla xfprint
+Summary(pl.UTF-8):   Wtyczka bsdlpr dla xfprint
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
 Requires:	/usr/bin/lpr
@@ -79,21 +79,21 @@ Provides:	%{name}-print-backend = %{version}-%{release}
 This package contains plugin for xfprint allowing to use old bsd style
 printing system through lpr program.
 
-%description bsdlpr -l pl
-Paczka ta zawiera wtyczkê dla xfprint, która umo¿liwia drukowanie w
+%description bsdlpr -l pl.UTF-8
+Paczka ta zawiera wtyczkÄ™ dla xfprint, ktÃ³ra umoÅ¼liwia drukowanie w
 stylu bsd poprzez program lpr.
 
 %package devel
 Summary:	Headers files for the xfprint library
-Summary(pl):	Pliki nag³ówkowe biblioteki xfprint
+Summary(pl.UTF-8):   Pliki nagÅ‚Ã³wkowe biblioteki xfprint
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
 %description devel
 Header files for the xfprint library.
 
-%description devel -l pl
-Pliki nag³ówkowe biblioteki xfprint.
+%description devel -l pl.UTF-8
+Pliki nagÅ‚Ã³wkowe biblioteki xfprint.
 
 %prep
 %setup -q
