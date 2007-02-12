@@ -1,5 +1,5 @@
 Summary:	Print dialog and printer manager for Xfce
-Summary(pl.UTF-8):   Okno dialogowe wydruku i zarządca drukarek dla Xfce
+Summary(pl.UTF-8):	Okno dialogowe wydruku i zarządca drukarek dla Xfce
 Name:		xfprint
 Version:	4.4.0
 Release:	1
@@ -42,7 +42,7 @@ Xfprint zawiera okno dialogowe wydruku i zarządcę drukarek dla
 
 %package apidocs
 Summary:	xfprint API documentation
-Summary(pl.UTF-8):   Dokumentacja API xfprint
+Summary(pl.UTF-8):	Dokumentacja API xfprint
 Group:		Documentation
 Requires:	gtk-doc-common
 
@@ -54,7 +54,7 @@ Dokumentacja API xfprint.
 
 %package cups
 Summary:	CUPS plugin for xfprint
-Summary(pl.UTF-8):   Wtyczka CUPS dla xfprint
+Summary(pl.UTF-8):	Wtyczka CUPS dla xfprint
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
 Provides:	%{name}-print-backend = %{version}-%{release}
@@ -69,7 +69,7 @@ korzystanie z systemu wydruku CUPS.
 
 %package bsdlpr
 Summary:	bsdlpr plugin for xfprint
-Summary(pl.UTF-8):   Wtyczka bsdlpr dla xfprint
+Summary(pl.UTF-8):	Wtyczka bsdlpr dla xfprint
 Group:		X11/Applications
 Requires:	%{name} = %{version}-%{release}
 Requires:	/usr/bin/lpr
@@ -85,7 +85,7 @@ stylu bsd poprzez program lpr.
 
 %package devel
 Summary:	Headers files for the xfprint library
-Summary(pl.UTF-8):   Pliki nagłówkowe biblioteki xfprint
+Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki xfprint
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 
