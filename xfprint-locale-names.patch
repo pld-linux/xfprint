@@ -1,0 +1,18 @@
+diff -urN xfprint-4.4.0/configure.in xfprint-4.4.0.new/configure.in
+--- xfprint-4.4.0/configure.in	2007-01-22 18:33:06.000000000 +0100
++++ xfprint-4.4.0.new/configure.in	2007-01-22 18:33:44.000000000 +0100
+@@ -80,7 +80,7 @@
+ AC_SUBST([PRINTCAP_PATH])
+ 
+ dnl Check for i18n support
+-XDT_I18N([ar az be bg bn_IN ca cs de dz el en_GB es es_MX et eu fa fi fr gl gu he hi hu it ja ka ko lt mk mr ms nl ro ru sk sv ta tr pa pl pt_BR pt_PT uk vi zh_CN zh_TW])
++XDT_I18N([ar az be bg bn_IN ca cs de dz el en_GB es es_MX et eu fa fi fr gl gu he hi hu it ja ka ko lt mk mr ms nl ro ru sk sv ta tr pa pl pt_BR pt uk vi zh_CN zh_TW])
+ 
+ dnl Check for gmodule
+ XDT_CHECK_PACKAGE([GMODULE], [gmodule-2.0], [gtk_minimum_version])
+--- xfprint-4.4.1/po/LINGUAS.orig	2007-04-11 20:46:38.000000000 +0200
++++ xfprint-4.4.1/po/LINGUAS	2007-04-11 20:46:50.000000000 +0200
+@@ -1,2 +1,2 @@
+ # set of available languages (in alphabetic order)
+-ar az be bg bn_IN ca cs de dz el en_GB es es_MX et eu fa fi fr gl gu he hi hu it ja ka ko lt mk mr ms nl ro ru sk sv ta tr pa pl pt_BR pt_PT uk vi zh_CN zh_TW
++ar az be bg bn_IN ca cs de dz el en_GB es es_MX et eu fa fi fr gl gu he hi hu it ja ka ko lt mk mr ms nl ro ru sk sv ta tr pa pl pt_BR pt uk vi zh_CN zh_TW
