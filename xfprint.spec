@@ -1,12 +1,12 @@
 Summary:	Print dialog and printer manager for Xfce
 Summary(pl.UTF-8):	Okno dialogowe wydruku i zarządca drukarek dla Xfce
 Name:		xfprint
-Version:	4.4.2
-Release:	1
+Version:	4.4.3
+Release:	0.1
 License:	GPL
 Group:		X11/Applications
 Source0:	http://www.xfce.org/archive/xfce-%{version}/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	be4802807e74dea30f4825102ceff5c5
+# Source0-md5:	7fc2cb1e531d22717b17f9f87711ec05
 Patch0:		%{name}-locale-names.patch
 Patch1:		%{name}-lpr.patch
 URL:		http://www.xfce.org/
