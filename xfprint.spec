@@ -8,7 +8,7 @@ Group:		X11/Applications
 Source0:	http://www.xfce.org/archive/xfce-%{version}/src/%{name}-%{version}.tar.bz2
 # Source0-md5:	7fc2cb1e531d22717b17f9f87711ec05
 Patch0:		%{name}-locale-names.patch
-Patch1:		%{name}-lpr.patch
+Patch1:		%{name}-bsdlpr.patch
 URL:		http://www.xfce.org/
 BuildRequires:	a2ps-devel
 BuildRequires:	autoconf >= 2.50
@@ -106,15 +106,14 @@ mv -f po/{pt_PT,pt}.po
 %build
 %{__glib_gettextize}
 %{__intltoolize}
-%{__libtoolize}
-%{__aclocal}
+%{__automake}
 %{__autoconf}
 %{__autoheader}
-%{__automake}
+%{__aclocal}
 %configure \
 	--disable-static \
 	--enable-cups \
-	--enable-bsdlpr \
+	--enable-bsdlpr=yes \
 	--enable-gtk-doc \
 	--with-html-dir=%{_gtkdocdir}
 
