@@ -1,26 +1,9 @@
---- ./configure.in.org	2008-10-28 13:50:15.347588954 +0100
-+++ ./configure.in	2008-10-28 13:56:40.521299860 +0100
-@@ -123,18 +123,21 @@ if test x"$enable_cups" = x"yes"; then
-   fi 
- fi
- AM_CONDITIONAL([BUILD_CUPS_SUPPORT], [test "x$cups_found" = "xyes"])
--AC_SUBST([CUPS_LIBS CUPS_CFLAGS CUPS_LDFLAGS CUPS_DATA])
-+AC_SUBST(CUPS_LIBS)
-+AC_SUBST(CUPS_CFLAGS)
-+AC_SUBST(CUPS_LDFLAGS)
-+AC_SUBST(CUPS_DATA)
- if test x"$cups_found" = x"yes"; then
-   AC_DEFINE(HAVE_CUPS, 1, Define if CUPS support is available)
- fi
- 
- dnl Check for BSD-LPR
- AC_ARG_ENABLE([bsdlpr],
--AC_HELP_STRING([--disable-bsdlpr], [Disable BSD-LPR support in xfprint])
--AC_HELP_STRING([--enable-bsdlpr], [Enable BSD-LPR support in xfprint]),
--[], [enable_bsdlpr=yes])
-+	AC_HELP_STRING([--disable-bsdlpr], [Disable BSD-LPR support in xfprint])
-+	AC_HELP_STRING([--enable-bsdlpr], [Enable BSD-LPR support in xfprint]),
-+	[], [enable_bsdlpr="yes"])
+diff -urN xfprint-4.6.0/configure.in xfprint-4.6.0.new/configure.in
+--- xfprint-4.6.0/configure.in	2009-02-25 07:36:35.000000000 +0100
++++ xfprint-4.6.0.new/configure.in	2009-03-01 00:54:08.000000000 +0100
+@@ -135,7 +135,7 @@
+ AC_HELP_STRING([--enable-bsdlpr], [Enable BSD-LPR support in xfprint]),
+ [], [enable_bsdlpr=yes])
  if test x"$enable_bsdlpr" = x"yes"; then
 -  AC_CHECK_PROG([bsdlpr_found], [lpr], [yes], [no])
 +  bsdlpr_found="yes"
