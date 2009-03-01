@@ -1,15 +1,14 @@
 Summary:	Print dialog and printer manager for Xfce
 Summary(pl.UTF-8):	Okno dialogowe wydruku i zarządca drukarek dla Xfce
 Name:		xfprint
-Version:	4.4.3
+Version:	4.6.0
 Release:	1
-License:	GPL
+License:	GPL v2
 Group:		X11/Applications
 Source0:	http://www.xfce.org/archive/xfce-%{version}/src/%{name}-%{version}.tar.bz2
-# Source0-md5:	7fc2cb1e531d22717b17f9f87711ec05
-Patch0:		%{name}-locale-names.patch
-Patch1:		%{name}-bsdlpr.patch
-URL:		http://www.xfce.org/
+# Source0-md5:	cf2e0de43367da6a0ef7eeef04876281
+Patch0:		%{name}-bsdlpr.patch
+URL:		http://www.xfce.org/projects/xfprint/
 BuildRequires:	a2ps-devel
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
@@ -19,13 +18,13 @@ BuildRequires:	gtk+2-devel >= 2:2.10.6
 BuildRequires:	gtk-doc >= 1.7
 BuildRequires:	intltool
 BuildRequires:	libtool
-BuildRequires:	libxfce4mcs-devel >= %{version}
+BuildRequires:	libxfce4util-devel >= %{version}
 BuildRequires:	libxfcegui4-devel >= %{version}
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.311
-BuildRequires:	xfce-mcs-manager-devel >= %{version}
-BuildRequires:	xfce4-dev-tools >= 4.4.0.1
+BuildRequires:	xfce4-dev-tools >= 4.6.0
+BuildRequires:	xfconf-devel >= %{version}
 Requires(post,postun):	gtk+2
 Requires(post,postun):	hicolor-icon-theme
 Requires:	%{name}-print-backend = %{version}-%{release}
@@ -88,6 +87,9 @@ Summary:	Headers files for the xfprint library
 Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki xfprint
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
+Requires:	gtk+2-devel >= 2:2.10.6
+Requires:	libxfce4util-devel >= %{version}
+Requires:	libxfcegui4-devel >= %{version}
 
 %description devel
 Header files for the xfprint library.
@@ -98,18 +100,15 @@ Pliki nagłówkowe biblioteki xfprint.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
-
-mv -f po/{nb_NO,nb}.po
-mv -f po/{pt_PT,pt}.po
 
 %build
 %{__glib_gettextize}
 %{__intltoolize}
-%{__automake}
-%{__autoconf}
-%{__autoheader}
+%{__libtoolize}
 %{__aclocal}
+%{__automake}
+%{__autoheader}
+%{__autoconf}
 %configure \
 	--disable-static \
 	--enable-cups \
@@ -125,8 +124,9 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
+mv $RPM_BUILD_ROOT%{_datadir}/locale/pt{_PT,}
+
 # unusable (no devel resources)
-rm -f $RPM_BUILD_ROOT%{_libdir}/xfce4/mcs-plugins/*.la
 rm -f $RPM_BUILD_ROOT%{_libdir}/xfce4/xfprint-plugins/*.la
 
 %find_lang %{name}
@@ -145,11 +145,15 @@ rm -rf $RPM_BUILD_ROOT
 %files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc AUTHORS ChangeLog README
-%attr(755,root,root) %{_bindir}/*
+%attr(755,root,root) %{_bindir}/xfprint-settings
+%attr(755,root,root) %{_bindir}/xfprint4
+%attr(755,root,root) %{_bindir}/xfprint4-manager
 %attr(755,root,root) %{_libdir}/libxfprint.so.*.*.*
-%attr(755,root,root) %{_libdir}/xfce4/mcs-plugins/*.so
+%attr(755,root,root) %ghost %{_libdir}/libxfprint.so.0
 %dir %{_libdir}/xfce4/xfprint-plugins
-%{_desktopdir}/*.desktop
+%{_desktopdir}/xfprint-manager.desktop
+%{_desktopdir}/xfprint-settings.desktop
+%{_desktopdir}/xfprint.desktop
 %{_datadir}/xfce4/doc/C/*
 %lang(fr) %{_datadir}/xfce4/doc/fr/*
 %{_iconsdir}/hicolor/*/devices/*
