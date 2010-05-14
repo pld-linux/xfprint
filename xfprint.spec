@@ -14,6 +14,7 @@ BuildRequires:	a2ps-devel
 BuildRequires:	autoconf >= 2.50
 BuildRequires:	automake
 BuildRequires:	cups-devel
+BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-devel
 BuildRequires:	gtk+2-devel >= 2:2.10.6
 BuildRequires:	gtk-doc >= 1.7
