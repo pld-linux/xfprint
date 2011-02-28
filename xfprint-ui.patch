@@ -1,0 +1,496 @@
+diff -ur xfprint-4.6.1-orig/config.h.in xfprint-4.6.1/config.h.in
+--- xfprint-4.6.1-orig/config.h.in	2009-04-14 23:10:17.000000000 +0200
++++ xfprint-4.6.1/config.h.in	2011-03-01 00:04:08.940963733 +0100
+@@ -66,6 +66,9 @@
+ /* Define to 1 if you have the `strlcpy' function. */
+ #undef HAVE_STRLCPY
+ 
++/* Define to 1 if you have the <sys/param.h> header file. */
++#undef HAVE_SYS_PARAM_H
++
+ /* Define to 1 if you have the <sys/stat.h> header file. */
+ #undef HAVE_SYS_STAT_H
+ 
+@@ -97,21 +100,39 @@
+ /* Define to the one symbol short name of this package. */
+ #undef PACKAGE_TARNAME
+ 
++/* Define to the home page for this package. */
++#undef PACKAGE_URL
++
+ /* Define to the version of this package. */
+ #undef PACKAGE_VERSION
+ 
+ /* Define to 1 if you have the ANSI C header files. */
+ #undef STDC_HEADERS
+ 
+-/* Version number of package */
+-#undef VERSION
+-
+-/* Define to 1 if on AIX 3.
+-   System headers sometimes define this.
+-   We just want to avoid a redefinition error message.  */
++/* Enable extensions on AIX 3, Interix.  */
+ #ifndef _ALL_SOURCE
+ # undef _ALL_SOURCE
+ #endif
++/* Enable GNU extensions on systems that have them.  */
++#ifndef _GNU_SOURCE
++# undef _GNU_SOURCE
++#endif
++/* Enable threading extensions on Solaris.  */
++#ifndef _POSIX_PTHREAD_SEMANTICS
++# undef _POSIX_PTHREAD_SEMANTICS
++#endif
++/* Enable extensions on HP NonStop.  */
++#ifndef _TANDEM_SOURCE
++# undef _TANDEM_SOURCE
++#endif
++/* Enable general extensions on Solaris.  */
++#ifndef __EXTENSIONS__
++# undef __EXTENSIONS__
++#endif
++
++
++/* Version number of package */
++#undef VERSION
+ 
+ /* Define to 1 if on MINIX. */
+ #undef _MINIX
+diff -ur xfprint-4.6.1-orig/configure.in xfprint-4.6.1/configure.in
+--- xfprint-4.6.1-orig/configure.in	2011-02-27 23:36:30.939017000 +0100
++++ xfprint-4.6.1/configure.in	2011-03-01 00:04:08.943962233 +0100
+@@ -91,8 +91,8 @@
+ dnl Check for gtk
+ XDT_CHECK_PACKAGE([GTK], [gtk+-2.0], [gtk_minimum_version])
+ 
+-dnl Check for libxfcegui4
+-XDT_CHECK_PACKAGE([LIBXFCEGUI4], [libxfcegui4-1.0], [xfce_minimum_version])
++dnl Check for libxfce4ui
++XDT_CHECK_PACKAGE([LIBXFCE4UI], [libxfce4ui-1], [xfce_minimum_version])
+ 
+ dnl Check for libxfce4uti
+ XDT_CHECK_PACKAGE([LIBXFCE4UTIL], [libxfce4util-1.0], [xfce_minimum_version])
+diff -ur xfprint-4.6.1-orig/doc/API/Makefile.am xfprint-4.6.1/doc/API/Makefile.am
+--- xfprint-4.6.1-orig/doc/API/Makefile.am	2009-02-24 22:34:17.000000000 +0100
++++ xfprint-4.6.1/doc/API/Makefile.am	2011-03-01 00:04:08.952957733 +0100
+@@ -67,8 +67,8 @@
+ # signals and properties.
+ # e.g. INCLUDES=-I$(top_srcdir) -I$(top_builddir) $(GTK_DEBUG_FLAGS)
+ # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
+-INCLUDES=-I$(top_srcdir) -I$(top_builddir)/libxfprint $(LIBXFCEGUI4_CFLAGS)
+-GTKDOC_LIBS=$(top_builddir)/libxfprint/libxfprint.la $(LIBXFCEGUI4_LIBS)
++INCLUDES=-I$(top_srcdir) -I$(top_builddir)/libxfprint $(LIBXFCE4UI_CFLAGS)
++GTKDOC_LIBS=$(top_builddir)/libxfprint/libxfprint.la $(LIBXFCE4UI_LIBS)
+ 
+ # This includes the standard gtk-doc make rules, copied by gtkdocize.
+ include $(top_srcdir)/gtk-doc.make
+diff -ur xfprint-4.6.1-orig/libxfprint/Makefile.am xfprint-4.6.1/libxfprint/Makefile.am
+--- xfprint-4.6.1-orig/libxfprint/Makefile.am	2009-02-24 22:34:10.000000000 +0100
++++ xfprint-4.6.1/libxfprint/Makefile.am	2011-03-01 00:04:08.956955733 +0100
+@@ -26,12 +26,12 @@
+ 	-I$(top_srcdir)							\
+ 	@GMODULE_CFLAGS@						\
+ 	@GTK_CFLAGS@							\
+-	@LIBXFCEGUI4_CFLAGS@
++	@LIBXFCE4UI_CFLAGS@
+ 	
+ libxfprint_la_LIBADD =							\
+ 	@GMODULE_LIBS@							\
+ 	@GTK_LIBS@							\
+-	@LIBXFCEGUI4_LIBS@
++	@LIBXFCE4UI_LIBS@
+ 
+ libxfprint_la_LDFLAGS =							\
+         -export-dynamic							\
+diff -ur xfprint-4.6.1-orig/libxfprint/printer-list-window.c xfprint-4.6.1/libxfprint/printer-list-window.c
+--- xfprint-4.6.1-orig/libxfprint/printer-list-window.c	2009-02-24 22:34:10.000000000 +0100
++++ xfprint-4.6.1/libxfprint/printer-list-window.c	2011-03-01 00:04:08.960953733 +0100
+@@ -27,7 +27,7 @@
+ 
+ #include <gtk/gtk.h>
+ #include <libxfce4util/libxfce4util.h>
+-#include <libxfcegui4/libxfcegui4.h>
++#include <libxfce4ui/libxfce4ui.h>
+ 
+ #include <libxfprint/common.h>
+ #include <libxfprint/printing-system.h>
+@@ -250,30 +250,28 @@
+ static void
+ action_about_cb (GtkAction * action, PrinterListWindow * win)
+ {
+-  XfceAboutInfo *info;
+   PrinterListWindowPrivate *priv = PRINTER_LIST_WINDOW_GET_PRIVATE (win);
+-  GtkWidget *dialog;
+   GdkPixbuf *icon;
+-
+-  info = xfce_about_info_new ("xfprint-manager", VERSION, _("Xfprint printers manager"),
+-                              XFCE_COPYRIGHT_TEXT ("2003-2006", "Xfce4 Team"), XFCE_LICENSE_GPL);
+-  xfce_about_info_set_homepage (info, "http://www.xfce.org/");
+-
+-  /* Credits */
+-  xfce_about_info_add_credit (info, "Benedikt Meurer", "benny@xfce.org", _("Former maintainer"));
+-  xfce_about_info_add_credit (info, "Jean-Francois Wauthy", "pollux@xfce.org", _("Maintainer"));
++  const gchar *auth[] = { "Benedikt Meurer benny@xfce.org Former maintainer",
++                          "Jean-Francois Wauthy pollux@xfce.org Maintainer",
++			  NULL };
+ 
+   icon = gtk_icon_theme_load_icon (priv->icontheme, "printer", 48, 0, NULL);
+ 
+-  dialog = xfce_about_dialog_new_with_values (GTK_WINDOW (win), info, icon);
+-
+-  gtk_window_set_default_size (GTK_WINDOW (dialog), 500, 400);
+-  xfce_about_info_free (info);
+-
+-  gtk_dialog_run (GTK_DIALOG (dialog));
+-
+-  gtk_widget_destroy (dialog);
+-
++#if !GTK_CHECK_VERSION (2, 18, 0)
++  gtk_about_dialog_set_email_hook (exo_gtk_url_about_dialog_hook, NULL, NULL);
++  gtk_about_dialog_set_url_hook (exo_gtk_url_about_dialog_hook, NULL, NULL);
++#endif
++  gtk_show_about_dialog(GTK_WINDOW (win),
++		  "logo", icon,
++		  "program-name", "xfprint-manager",
++		  "license", xfce_get_license_text (XFCE_LICENSE_TEXT_GPL),
++		  "version", VERSION,
++		  "comments", _("Xfprint printers manager"),
++		  "website", "http://www.xfce.org/",
++		  "copyright", "2003-2006 Xfce4 Team",
++		  "authors", auth, 
++		  NULL);
+   g_object_unref (icon);
+ }
+ 
+diff -ur xfprint-4.6.1-orig/libxfprint/printer-queue-window.c xfprint-4.6.1/libxfprint/printer-queue-window.c
+--- xfprint-4.6.1-orig/libxfprint/printer-queue-window.c	2009-02-24 22:34:10.000000000 +0100
++++ xfprint-4.6.1/libxfprint/printer-queue-window.c	2011-03-01 00:04:08.961953233 +0100
+@@ -25,7 +25,7 @@
+ #include <stdlib.h>
+ #include <gtk/gtk.h>
+ #include <libxfce4util/libxfce4util.h>
+-#include <libxfcegui4/libxfcegui4.h>
++#include <libxfce4ui/libxfce4ui.h>
+ 
+ #include <libxfprint/common.h>
+ #include <libxfprint/printing-system.h>
+@@ -380,14 +380,14 @@
+     response = xfce_message_dialog (GTK_WINDOW (win), _("Remove job"),
+                                     GTK_STOCK_DIALOG_QUESTION,
+                                     dialog_message, NULL,
+-                                    XFCE_CUSTOM_STOCK_BUTTON, _("Don't remove job"), GTK_STOCK_CANCEL,
+-                                    GTK_RESPONSE_CANCEL, XFCE_CUSTOM_STOCK_BUTTON, _("Remove job"), GTK_STOCK_REMOVE,
++                                    "custom-button-stock", _("Don't remove job"), GTK_STOCK_CANCEL,
++                                    GTK_RESPONSE_CANCEL, "custom-button-stock", _("Remove job"), GTK_STOCK_REMOVE,
+                                     GTK_RESPONSE_OK, NULL);
+     if (response == GTK_RESPONSE_OK) {
+       if (printing_system_remove_job (priv->ps, priv->printer, atoi (string_id)))
+         action_refresh_cb (NULL, win);
+       else
+-        xfce_err (_("An error occurred while removing job !"));
++        xfce_dialog_show_error (NULL, NULL, _("An error occurred while removing job !"));
+     }
+ 
+     g_free (string_id);
+diff -ur xfprint-4.6.1-orig/libxfprint/printing-system.h xfprint-4.6.1/libxfprint/printing-system.h
+--- xfprint-4.6.1-orig/libxfprint/printing-system.h	2009-02-24 22:34:10.000000000 +0100
++++ xfprint-4.6.1/libxfprint/printing-system.h	2011-03-01 00:04:08.963952233 +0100
+@@ -24,7 +24,7 @@
+ #endif
+ 
+ #include <gtk/gtk.h>
+-#include <libxfcegui4/libxfcegui4.h>
++#include <libxfce4ui/libxfce4ui.h>
+ 
+ #include <libxfprint/common.h>
+ #include <libxfprint/printer.h>
+diff -ur xfprint-4.6.1-orig/printing-systems/bsd-lpr/bsdlpr.c xfprint-4.6.1/printing-systems/bsd-lpr/bsdlpr.c
+--- xfprint-4.6.1-orig/printing-systems/bsd-lpr/bsdlpr.c	2009-02-24 22:34:16.000000000 +0100
++++ xfprint-4.6.1/printing-systems/bsd-lpr/bsdlpr.c	2011-03-01 00:11:00.080764898 +0100
+@@ -26,7 +26,7 @@
+ #include <string.h>
+ #endif
+ 
+-#include <libxfcegui4/libxfcegui4.h>
++#include <libxfce4ui/libxfce4ui.h>
+ #include <libxfce4util/libxfce4util.h>
+ 
+ #include <libxfprint/libxfprint.h>
+@@ -241,7 +241,7 @@
+ 
+   cmd = g_strdup_printf ("lprm -P%s %d", printer, id);
+   DBG ("executing '%s'", cmd);
+-  ret = xfce_exec (cmd, FALSE, FALSE, NULL);
++  ret = xfce_spawn_command_line_on_screen (gdk_screen_get_default(), cmd, FALSE, FALSE, NULL);
+   g_free (cmd);
+ 
+   return ret;
+@@ -257,7 +257,7 @@
+   base_name = g_path_get_basename (original_name);
+ 
+   cmd = g_strdup_printf ("lpr -P%s -T %s %s", printer, base_name, file);
+-  ret = xfce_exec_sync (cmd, FALSE, FALSE, NULL);
++  ret = xfce_spawn_command_line_on_screen (gdk_screen_get_default(), cmd, FALSE, FALSE, NULL);
+ 
+   if (remove_file)
+     unlink (file);
+diff -ur xfprint-4.6.1-orig/printing-systems/bsd-lpr/Makefile.am xfprint-4.6.1/printing-systems/bsd-lpr/Makefile.am
+--- xfprint-4.6.1-orig/printing-systems/bsd-lpr/Makefile.am	2009-02-24 22:34:16.000000000 +0100
++++ xfprint-4.6.1/printing-systems/bsd-lpr/Makefile.am	2011-03-01 00:04:08.967950233 +0100
+@@ -8,7 +8,7 @@
+ bsdlpr_plugin_la_CFLAGS =                                               \
+         -I$(top_srcdir)                                                 \
+ 	-I$(top_srcdir)/libxfprint                                      \
+-	@LIBXFCEGUI4_CFLAGS@ 						\
++	@LIBXFCE4UI_CFLAGS@ 						\
+ 	@GMODULE_CFLAGS@						\
+ 	-DPRINTCAP_PATH=\"@PRINTCAP_PATH@\"                             \
+ 	-DPACKAGE_LOCALE_DIR=\"$(localedir)\"                            
+@@ -18,5 +18,5 @@
+ 	-module
+ 
+ bsdlpr_plugin_la_LIBADD =                                               \
+-	@LIBXFCEGUI4_LIBS@                                              \
++	@LIBXFCE4UI_LIBS@                                              \
+ 	@GMODULE_LIBS@						
+diff -ur xfprint-4.6.1-orig/printing-systems/cups/cups.c xfprint-4.6.1/printing-systems/cups/cups.c
+--- xfprint-4.6.1-orig/printing-systems/cups/cups.c	2009-02-24 22:34:16.000000000 +0100
++++ xfprint-4.6.1/printing-systems/cups/cups.c	2011-03-01 00:04:08.969949233 +0100
+@@ -28,7 +28,7 @@
+ #include <cups/cups.h>
+ #include <cups/language.h>
+ 
+-#include <libxfcegui4/libxfcegui4.h>
++#include <libxfce4ui/libxfce4ui.h>
+ #include <libxfce4util/libxfce4util.h>
+ 
+ #include <libxfprint/libxfprint.h>
+@@ -114,7 +114,7 @@
+       }
+       else {
+         g_free (username);
+-        xfce_err (_("You have to provide an username !"));
++        xfce_dialog_show_error (NULL, NULL, _("You have to provide an username !"));
+       }
+ 
+     }
+@@ -462,7 +462,7 @@
+ remove_job (const gchar * printer, gint id)
+ {
+   if (cupsCancelJob (printer, id) == 0) {
+-    xfce_err (ippErrorString (cupsLastError ()));
++    xfce_dialog_show_error (NULL, NULL, ippErrorString (cupsLastError ()));
+     return FALSE;
+   }
+ 
+@@ -487,7 +487,7 @@
+ /*     xfce_info (_("Test page sent to printer.")); */
+ /*   } */
+ /*   else */
+-/*     xfce_err (_("An error occured while sending test page to printer : %s"), ippErrorString (cupsLastError ())); */
++/*    xfce_dialog_show_error (NULL, NULL, _("An error occured while sending test page to printer : %s"), ippErrorString (cupsLastError ())); */
+ 
+ /*   g_free (testpage_file); */
+ /* } */
+@@ -570,7 +570,7 @@
+     ret = TRUE;
+   }
+   else {
+-    xfce_err (ippErrorString (cupsLastError ()));
++    xfce_dialog_show_error (NULL, NULL, ippErrorString (cupsLastError ()));
+   }
+ 
+   cupsFreeDests (num_dests, dests);
+diff -ur xfprint-4.6.1-orig/printing-systems/cups/Makefile.am xfprint-4.6.1/printing-systems/cups/Makefile.am
+--- xfprint-4.6.1-orig/printing-systems/cups/Makefile.am	2009-02-24 22:34:16.000000000 +0100
++++ xfprint-4.6.1/printing-systems/cups/Makefile.am	2011-03-01 00:04:08.971948233 +0100
+@@ -8,7 +8,7 @@
+ cups_plugin_la_CFLAGS =                                                 \
+         -I$(top_srcdir)                                                 \
+ 	-I$(top_srcdir)/libxfprint                                      \
+-	@LIBXFCEGUI4_CFLAGS@ 						\
++	@LIBXFCE4UI_CFLAGS@ 						\
+ 	@GMODULE_CFLAGS@						\
+ 	@CUPS_CFLAGS@                                                   \
+ 	-DPACKAGE_LOCALE_DIR=\"$(localedir)\"                           \
+@@ -21,6 +21,6 @@
+ 	-module
+ 
+ cups_plugin_la_LIBADD =                                                 \
+-	@LIBXFCEGUI4_LIBS@                                              \
++	@LIBXFCE4UI_LIBS@                                              \
+ 	@GMODULE_LIBS@							\
+ 	@CUPS_LIBS@
+diff -ur xfprint-4.6.1-orig/xfprint/main.c xfprint-4.6.1/xfprint/main.c
+--- xfprint-4.6.1-orig/xfprint/main.c	2009-02-24 22:34:15.000000000 +0100
++++ xfprint-4.6.1/xfprint/main.c	2011-03-01 00:04:08.978944733 +0100
+@@ -34,7 +34,7 @@
+ 
+ #include <xfconf/xfconf.h>
+ #include <libxfce4util/libxfce4util.h>
+-#include <libxfcegui4/libxfcegui4.h>
++#include <libxfce4ui/libxfce4ui.h>
+ #include <printing-system.h>
+ 
+ #include "print_dialog.h"
+@@ -117,7 +117,7 @@
+       file = gtk_file_chooser_get_filename (GTK_FILE_CHOOSER (selection));
+ 
+       if (!g_file_test (file, G_FILE_TEST_IS_REGULAR)) {
+-        xfce_err (_("The specified file does not exist"));
++        xfce_dialog_show_error (NULL, NULL, _("The specified file does not exist"));
+         g_free (file);
+         exit (EXIT_FAILURE);
+       }
+diff -ur xfprint-4.6.1-orig/xfprint/Makefile.am xfprint-4.6.1/xfprint/Makefile.am
+--- xfprint-4.6.1-orig/xfprint/Makefile.am	2009-02-24 22:34:15.000000000 +0100
++++ xfprint-4.6.1/xfprint/Makefile.am	2011-03-01 00:04:08.981943233 +0100
+@@ -34,7 +34,7 @@
+ 	-DPACKAGE_LOCALE_DIR=\"$(localedir)\"				\
+ 	-DPLUGIN_DIR=\"${libdir}/xfce4/xfprint-plugins\"		\
+ 	@XFCONF_CFLAGS@							\
+-	@LIBXFCEGUI4_CFLAGS@
++	@LIBXFCE4UI_CFLAGS@
+ 
+ xfprint4_LDFLAGS =                                                      \
+         -export-dynamic
+@@ -42,7 +42,7 @@
+ xfprint4_LDADD =							\
+ 	$(top_builddir)/libxfprint/libxfprint.la			\
+ 	@XFCONF_LIBS@							\
+-	@LIBXFCEGUI4_LIBS@
++	@LIBXFCE4UI_LIBS@
+ 
+ xfprint4_DEPENDENCIES =							\
+ 	$(top_builddir)/libxfprint/libxfprint.la
+diff -ur xfprint-4.6.1-orig/xfprint/print_dialog.c xfprint-4.6.1/xfprint/print_dialog.c
+--- xfprint-4.6.1-orig/xfprint/print_dialog.c	2009-02-24 22:34:15.000000000 +0100
++++ xfprint-4.6.1/xfprint/print_dialog.c	2011-03-01 00:04:08.985941233 +0100
+@@ -27,7 +27,7 @@
+ #include <fcntl.h>
+ #include <ctype.h>
+ 
+-#include <libxfcegui4/libxfcegui4.h>
++#include <libxfce4ui/libxfce4ui.h>
+ 
+ #include <printing-system.h>
+ 
+@@ -196,7 +196,7 @@
+   
+   gtk_window_set_icon_name (GTK_WINDOW (obj), "printer");
+   
+-  button_save = xfce_create_mixed_button (GTK_STOCK_SAVE, _("Save settings"));
++  button_save = xfce_gtk_button_new_mixed (GTK_STOCK_SAVE, _("Save settings"));
+   g_signal_connect (G_OBJECT (button_save), "clicked", G_CALLBACK (button_save_clicked_cb), obj);
+   gtk_box_pack_start (GTK_BOX (GTK_DIALOG (obj)->action_area), button_save, TRUE, TRUE, 0);
+ 
+@@ -363,7 +363,7 @@
+   g_free (ret);
+     
+   if (!ps && !a2ps_found) {
+-    xfce_err (_("Neither the printing system backend or a2ps could be found on your system, you won't be able to print a file with xfprint !"));
++    xfce_dialog_show_error (NULL, NULL, _("Neither the printing system backend or a2ps could be found on your system, you won't be able to print a file with xfprint !"));
+     exit (1);
+   }
+   
+@@ -481,7 +481,7 @@
+         
+         if (!printing_system_print_file (priv->ps, printer, priv->input_file, ofile, 
+ 					 gtk_toggle_button_get_active (GTK_TOGGLE_BUTTON (priv->checkbutton_apply_filters))))
+-          xfce_err (_("An error occurred while trying to print the file"));
++          xfce_dialog_show_error (NULL, NULL, _("An error occurred while trying to print the file"));
+       
+         g_free (printer);
+       }
+diff -ur xfprint-4.6.1-orig/xfprint-manager/main.c xfprint-4.6.1/xfprint-manager/main.c
+--- xfprint-4.6.1-orig/xfprint-manager/main.c	2009-02-24 22:34:16.000000000 +0100
++++ xfprint-4.6.1/xfprint-manager/main.c	2011-03-01 00:04:08.986940733 +0100
+@@ -35,7 +35,7 @@
+ #include <gtk/gtk.h>
+ #include <xfconf/xfconf.h>
+ #include <libxfce4util/libxfce4util.h>
+-#include <libxfcegui4/dialogs.h>
++#include <libxfce4ui/libxfce4ui.h>
+ 
+ #include <libxfprint/printing-system.h>
+ #include <libxfprint/printer-list-window.h>
+diff -ur xfprint-4.6.1-orig/xfprint-manager/Makefile.am xfprint-4.6.1/xfprint-manager/Makefile.am
+--- xfprint-4.6.1-orig/xfprint-manager/Makefile.am	2009-02-24 22:34:16.000000000 +0100
++++ xfprint-4.6.1/xfprint-manager/Makefile.am	2011-03-01 00:04:08.990938733 +0100
+@@ -19,7 +19,7 @@
+ 	-DPACKAGE_LOCALE_DIR=\"$(localedir)\"				\
+ 	-DPLUGIN_DIR=\"${libdir}/xfce4/xfprint-plugins\"                \
+ 	@XFCONF_CFLAGS@							\
+-	@LIBXFCEGUI4_CFLAGS@
++	@LIBXFCE4UI_CFLAGS@
+ 
+ xfprint4_manager_LDFLAGS =                                              \
+         -export-dynamic
+@@ -27,7 +27,7 @@
+ xfprint4_manager_LDADD =						\
+ 	$(top_builddir)/libxfprint/libxfprint.la			\
+ 	@XFCONF_LIBS@							\
+-	@LIBXFCEGUI4_LIBS@						
++	@LIBXFCE4UI_LIBS@						
+ 
+ appsdir = $(datadir)/applications
+ apps_in_files = xfprint-manager.desktop.in
+diff -ur xfprint-4.6.1-orig/xfprint-settings/Makefile.am xfprint-4.6.1/xfprint-settings/Makefile.am
+--- xfprint-4.6.1-orig/xfprint-settings/Makefile.am	2009-02-24 22:34:11.000000000 +0100
++++ xfprint-4.6.1/xfprint-settings/Makefile.am	2011-03-01 00:04:08.993937233 +0100
+@@ -6,7 +6,7 @@
+ xfprint_settings_CFLAGS = 						\
+     -I$(top_srcdir)                                                 \
+ 	-I$(top_srcdir)/libxfprint					\
+-	@LIBXFCEGUI4_CFLAGS@ 						\
++	@LIBXFCE4UI_CFLAGS@ 						\
+ 	@XFCONF_CFLAGS@ 					\
+ 	-DPACKAGE_LOCALE_DIR=\""$(localedir)"\"                         \
+ 	-DPLUGIN_DIR=\"${libdir}/xfce4/xfprint-plugins\"		\
+@@ -14,7 +14,7 @@
+ 
+ xfprint_settings_LDADD =						\
+ 	$(top_builddir)/libxfprint/libxfprint.la			\
+-	@LIBXFCEGUI4_LIBS@                                              \
++	@LIBXFCE4UI_LIBS@                                              \
+     @XFCONF_LIBS@
+ 
+ appsdir = $(datadir)/applications
+diff -ur xfprint-4.6.1-orig/xfprint-settings/xfprint_plugin.c xfprint-4.6.1/xfprint-settings/xfprint_plugin.c
+--- xfprint-4.6.1-orig/xfprint-settings/xfprint_plugin.c	2009-02-24 22:34:11.000000000 +0100
++++ xfprint-4.6.1/xfprint-settings/xfprint_plugin.c	2011-03-01 00:04:08.994936733 +0100
+@@ -26,7 +26,7 @@
+ 
+ /* */
+ #include <xfconf/xfconf.h>
+-#include <libxfcegui4/libxfcegui4.h>
++#include <libxfce4ui/libxfce4ui.h>
+ 
+ #include <printing-system.h>
+ 
+@@ -322,7 +322,7 @@
+     g_error_free (error);
+   }
+ 
+-  xfce_gtk_window_center_on_monitor_with_pointer (GTK_WINDOW (dialog));
++  xfce_gtk_window_center_on_active_screen (GTK_WINDOW (dialog));
+   gtk_widget_show_all (dialog);
+   return dialog;
+ }
+diff -ur xfprint-4.6.1-orig/xfprint.spec.in xfprint-4.6.1/xfprint.spec.in
+--- xfprint-4.6.1-orig/xfprint.spec.in	2009-02-24 22:34:23.000000000 +0100
++++ xfprint-4.6.1/xfprint.spec.in	2011-03-01 00:04:08.996935733 +0100
+@@ -8,10 +8,10 @@
+ Group: 		User Interface/Desktops
+ BuildRoot: 	%{_tmppath}/%{name}-root
+ Requires:	glib2 >= @GLIB_REQUIRED_VERSION@
+-Requires:	libxfcegui4 >= @LIBXFCEGUI4_REQUIRED_VERSION@
++Requires:	libxfce4ui >= @LIBXFCE4UI_REQUIRED_VERSION@
+ Requires:	a2ps
+ BuildRequires: 	glib2-devel >= @GLIB_REQUIRED_VERSION@
+-BuildRequires: 	libxfcegui4-devel >= @LIBXFCEGUI4_REQUIRED_VERSION@
++BuildRequires: 	libxfce4ui-devel >= @LIBXFCE4UI_REQUIRED_VERSION@
+ BuildRequires:	a2ps
+ 
+ %description
