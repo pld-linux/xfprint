@@ -2,7 +2,7 @@ Summary:	Print dialog and printer manager for Xfce
 Summary(pl.UTF-8):	Okno dialogowe wydruku i zarządca drukarek dla Xfce
 Name:		xfprint
 Version:	4.6.1
-Release:	8
+Release:	9
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://www.xfce.org/archive/xfce-%{version}/src/%{name}-%{version}.tar.bz2
@@ -10,6 +10,7 @@ Source0:	http://www.xfce.org/archive/xfce-%{version}/src/%{name}-%{version}.tar.
 Patch0:		%{name}-bsdlpr.patch
 Patch1:		%{name}-desktop.patch
 Patch2:		%{name}-ui.patch
+Patch3:		format-security.patch
 URL:		http://www.xfce.org/projects/xfprint/
 BuildRequires:	a2ps-devel
 BuildRequires:	autoconf >= 2.50
@@ -106,6 +107,7 @@ Pliki nagłówkowe biblioteki xfprint.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %{__glib_gettextize}

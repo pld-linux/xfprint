@@ -1,0 +1,31 @@
+--- xfprint-4.6.1/xfprint/xfprintsettings.c~	2009-02-24 22:34:15.000000000 +0100
++++ xfprint-4.6.1/xfprint/xfprintsettings.c	2013-11-07 10:07:14.949795649 +0100
+@@ -495,7 +495,7 @@
+ 	ctx = g_markup_parse_context_new(&markup_parser, 0, &parser, NULL);
+ 
+ 	if (!g_markup_parse_context_parse(ctx, contents, sb.st_size, &error)) {
+-		g_print(error->message);
++		g_print("%s", error->message);
+ 		goto finished3;
+ 	}
+ 	
+--- xfprint-4.6.1/printing-systems/cups/cups.c~	2013-11-07 10:06:16.000000000 +0100
++++ xfprint-4.6.1/printing-systems/cups/cups.c	2013-11-07 10:08:31.559795094 +0100
+@@ -462,7 +462,7 @@
+ remove_job (const gchar * printer, gint id)
+ {
+   if (cupsCancelJob (printer, id) == 0) {
+-    xfce_dialog_show_error (NULL, NULL, ippErrorString (cupsLastError ()));
++    xfce_dialog_show_error (NULL, NULL, "%s", ippErrorString (cupsLastError ()));
+     return FALSE;
+   }
+ 
+@@ -570,7 +570,7 @@
+     ret = TRUE;
+   }
+   else {
+-    xfce_dialog_show_error (NULL, NULL, ippErrorString (cupsLastError ()));
++    xfce_dialog_show_error (NULL, NULL, "%s", ippErrorString (cupsLastError ()));
+   }
+ 
+   cupsFreeDests (num_dests, dests);
