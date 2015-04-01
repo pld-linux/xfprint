@@ -1,0 +1,90 @@
+--- xfprint-4.6.1/configure.in~	2015-04-01 20:59:50.000000000 +0200
++++ xfprint-4.6.1/configure.in	2015-04-01 21:58:12.092006403 +0200
+@@ -115,6 +115,7 @@
+     CUPS_CFLAGS=`$cups_config --cflags`
+     CUPS_LDFLAGS=`$cups_config --ldflags`
+     CUPS_DATA=`$cups_config --datadir`
++    CUPS_VERSION=`$cups_config --version | awk -F. '{ print $1 }'`
+     cups_found="yes"	    
+   else
+     AC_MSG_RESULT([cups-config not found, CUPS support disabled. Either you don't have CUPS-dev installed or you should consider upgrading CUPS])
+@@ -127,6 +128,9 @@
+ AC_SUBST([CUPS_DATA])
+ if test x"$cups_found" = x"yes"; then
+   AC_DEFINE(HAVE_CUPS, 1, Define if CUPS support is available)
++  if test x"$CUPS_VERSION" = x"2" ; then
++    AC_DEFINE(HAVE_CUPS_2, 1, Define if building with CUPS 2.x)
++  fi
+ fi
+ 
+ dnl Check for BSD-LPR
+--- xfprint-4.6.1/printing-systems/cups/cups.c~	2015-04-01 20:59:50.000000000 +0200
++++ xfprint-4.6.1/printing-systems/cups/cups.c	2015-04-01 21:51:27.265336993 +0200
+@@ -133,8 +133,13 @@
+ 
+   language = cupsLangDefault ();
+   request = ippNew ();
++#ifdef HAVE_CUPS_2
++  ippSetOperation(request, (ipp_op_t)operation_id);
++  ippSetRequestId(request, 1);
++#else
+   request->request.op.operation_id = operation_id;
+   request->request.op.request_id = 1;
++#endif
+ 
+   ippAddString (request, IPP_TAG_OPERATION, IPP_TAG_CHARSET, "attributes-charset", NULL, "utf-8");
+ 
+@@ -242,24 +247,40 @@
+ 
+       if (!request)
+         continue;
++#ifdef HAVE_CUPS_2
++      if (ippGetState(request) == IPP_ERROR || ippGetState(request) == IPP_IDLE) {
++#else
+       if (request->state == IPP_ERROR || request->state == IPP_IDLE) {
++#endif
+         ippDelete (request);
+         continue;
+       }
+ 
+       attr = ippFindAttribute (request, "printer-info", IPP_TAG_TEXT);
++#ifdef HAVE_CUPS_2
++      if (!attr || strlen (ippGetString(attr, 0, NULL)) == 0) {
++#else
+       if (!attr || strlen (attr->values[0].string.text) == 0) {
++#endif
+         attr = ippFindAttribute (request, "printer-make-and-model", IPP_TAG_TEXT);
+         if (attr)
++#ifdef HAVE_CUPS_2
++          printer->alias = g_strdup (ippGetString(attr, 0, NULL));
++#else
+           printer->alias = g_strdup (attr->values[0].string.text);
++#endif
+         else
+           printer->alias = g_strdup ("");
+       }
+       else
+-        printer->alias = g_strdup (attr->values[0].string.text);
++        printer->alias = g_strdup (ippGetString(attr, 0, NULL));
+ 
+       attr = ippFindAttribute (request, "printer-type", IPP_TAG_ENUM);
++#ifdef HAVE_CUPS_2
++      if (attr && (ippGetInteger(attr, 0) & CUPS_PRINTER_CLASS))
++#else
+       if (attr && (attr->values[0].integer & CUPS_PRINTER_CLASS))
++#endif
+         printer->type = PRINTER_TYPE_CLASS;
+       else
+         printer->type = PRINTER_TYPE_PRINTER;
+@@ -309,7 +330,11 @@
+     ipp_attribute_t *attr = ippFindAttribute (request, "printer-state",
+                                               IPP_TAG_ENUM);
+     if (attr)
++#ifdef HAVE_CUPS_2
++      switch (ippGetInteger(attr, 0)) {
++#else
+       switch (attr->values[0].integer) {
++#endif
+       case IPP_PRINTER_IDLE:
+         state = PRINTER_STATE_IDLE;
+         break;
