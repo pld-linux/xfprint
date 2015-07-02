@@ -2,7 +2,7 @@ Summary:	Print dialog and printer manager for Xfce
 Summary(pl.UTF-8):	Okno dialogowe wydruku i zarządca drukarek dla Xfce
 Name:		xfprint
 Version:	4.6.1
-Release:	10
+Release:	11
 License:	GPL v2
 Group:		X11/Applications
 Source0:	http://www.xfce.org/archive/xfce-%{version}/src/%{name}-%{version}.tar.bz2
@@ -23,8 +23,8 @@ BuildRequires:	gtk+2-devel >= 2:2.10.6
 BuildRequires:	gtk-doc >= 1.7
 BuildRequires:	intltool
 BuildRequires:	libtool
-BuildRequires:	libxfce4util-devel >= %{version}
 BuildRequires:	libxfce4ui-devel >= %{version}
+BuildRequires:	libxfce4util-devel >= %{version}
 BuildRequires:	openssl-devel >= 0.9.7d
 BuildRequires:	pkgconfig >= 1:0.9.0
 BuildRequires:	rpmbuild(macros) >= 1.311
@@ -50,6 +50,9 @@ Summary:	xfprint API documentation
 Summary(pl.UTF-8):	Dokumentacja API xfprint
 Group:		Documentation
 Requires:	gtk-doc-common
+%if "%{_rpmversion}" >= "5"
+BuildArch:	noarch
+%endif
 
 %description apidocs
 xfprint API documentation.
@@ -94,8 +97,8 @@ Summary(pl.UTF-8):	Pliki nagłówkowe biblioteki xfprint
 Group:		X11/Development/Libraries
 Requires:	%{name} = %{version}-%{release}
 Requires:	gtk+2-devel >= 2:2.10.6
-Requires:	libxfce4util-devel >= %{version}
 Requires:	libxfce4ui-devel >= %{version}
+Requires:	libxfce4util-devel >= %{version}
 
 %description devel
 Header files for the xfprint library.
