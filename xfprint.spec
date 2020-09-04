@@ -2,10 +2,10 @@ Summary:	Print dialog and printer manager for Xfce
 Summary(pl.UTF-8):	Okno dialogowe wydruku i zarządca drukarek dla Xfce
 Name:		xfprint
 Version:	4.6.1
-Release:	16
+Release:	17
 License:	GPL v2
 Group:		X11/Applications
-Source0:	http://www.xfce.org/archive/xfce-%{version}/src/%{name}-%{version}.tar.bz2
+Source0:	https://archive.xfce.org/xfce-%{version}/src/%{name}-%{version}.tar.bz2
 # Source0-md5:	d92fca97a42816085080baf07a99a62e
 Patch0:		%{name}-bsdlpr.patch
 Patch1:		%{name}-desktop.patch
@@ -21,7 +21,7 @@ BuildRequires:	docbook-dtd412-xml
 BuildRequires:	gettext-tools
 BuildRequires:	gtk+2-devel >= 2:2.10.6
 BuildRequires:	gtk-doc >= 1.7
-BuildRequires:	intltool
+BuildRequires:	intltool >= 0.31
 BuildRequires:	libtool
 BuildRequires:	libxfce4ui-devel >= %{version}
 BuildRequires:	libxfce4util-devel >= %{version}
@@ -138,8 +138,10 @@ rm -rf $RPM_BUILD_ROOT
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-# unusable (no devel resources)
-rm -f $RPM_BUILD_ROOT%{_libdir}/xfce4/xfprint-plugins/*.la
+# obsoleted by pkg-config
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/libxfprint.la
+# loadable plugins
+%{__rm} $RPM_BUILD_ROOT%{_libdir}/xfce4/xfprint-plugins/*.la
 
 %find_lang %{name}
 
@@ -188,5 +190,4 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(755,root,root) %{_libdir}/libxfprint.so
 %{_includedir}/xfce4/libxfprint
-%{_libdir}/libxfprint.la
 %{_pkgconfigdir}/xfprint-1.0.pc
